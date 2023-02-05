@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -10,7 +13,7 @@ export default function SignIn() {
   });
 
   const { email, password } = formData;
-
+  const navigate = useNavigate();
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -18,6 +21,23 @@ export default function SignIn() {
     }));
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (userCredential) {
+        navigate("/");
+        toast.success("Sign In was successful!");
+      }
+    } catch (error) {
+      toast.error("Wrong Credential input");
+    }
+  };
   return (
     <section>
       <h1 className="mt-6 text-3xl font-bold text-center">Sign In</h1>
@@ -30,7 +50,7 @@ export default function SignIn() {
           />
         </div>
         <div className="md:w-[67%] w-full lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               className="w-full px-4 py-2 mb-6 text-xl text-gray-700 transition ease-in-out bg-white border-gray-300 rounded"
               type="email"

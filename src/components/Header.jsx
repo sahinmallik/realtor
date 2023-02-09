@@ -23,7 +23,7 @@ export default function Header() {
     }
   };
   return (
-    <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
+    <div className="sticky top-0 z-40 bg-white border-b shadow-sm">
       <header className="flex items-center justify-between max-w-6xl px-3 mx-auto">
         <div>
           <img

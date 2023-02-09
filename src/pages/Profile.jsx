@@ -18,6 +18,7 @@ export default function Profile() {
   const onLogOut = () => {
     auth.signOut();
     navigate("/");
+    toast.success("Logged out successfully!");
   };
 
   const onChange = (e) => {

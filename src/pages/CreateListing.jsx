@@ -4,8 +4,8 @@ export default function CreateListing() {
   const [formData, setFormData] = useState({
     type: "rent",
     name: "",
-    bedrooms: 1,
-    bathrooms: 1,
+    bedRooms: 1,
+    bathRooms: 1,
     parkingSpot: false,
     furnished: false,
     address: "",
@@ -18,8 +18,8 @@ export default function CreateListing() {
   const {
     type,
     name,
-    bedrooms,
-    bathrooms,
+    bedRooms,
+    bathRooms,
     parkingSpot,
     furnished,
     address,
@@ -29,8 +29,27 @@ export default function CreateListing() {
     discountPrice,
   } = formData;
 
-  const onChange = () => {};
-
+  const onChange = (e) => {
+    let boolean = null;
+    if (e.target.value === "true") {
+      boolean = true;
+    }
+    if (e.target.value === "false") {
+      boolean = false;
+    }
+    if (e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        images: e.target.files,
+      }));
+    }
+    if (!e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: boolean ?? e.target.value,
+      }));
+    }
+  };
   return (
     <main className="max-w-md px-2 mx-auto">
       <h1 className="mt-6 text-3xl font-bold text-center">Create a Listing</h1>
@@ -54,7 +73,7 @@ export default function CreateListing() {
           <button
             type="button"
             id="type"
-            value="sale"
+            value="rent"
             onClick={onChange}
             className={`w-full ml-3 py-3 text-sm font-medium uppercase transition duration-150 ease-in-out rounded shadow-md px-7 hover:shadow-lg focus:shadow-lg active:shadow-lg ${
               type === "sale"
@@ -85,8 +104,9 @@ export default function CreateListing() {
             <p className="text-lg font-semibold">Beds</p>
             <input
               type="number"
-              id="bedroom"
-              value={bedrooms}
+              id="bedRooms"
+              value={bedRooms}
+              onChange={onChange}
               min={1}
               max={50}
               required
@@ -97,8 +117,9 @@ export default function CreateListing() {
             <p className="text-lg font-semibold">Baths</p>
             <input
               type="number"
-              id="bedroom"
-              value={bathrooms}
+              id="bathRooms"
+              value={bathRooms}
+              onChange={onChange}
               min={1}
               max={50}
               required
@@ -217,7 +238,7 @@ export default function CreateListing() {
 
         <div className="mb-6">
           <p className="text-lg font-semibold">Regular Price</p>
-          <div className="flex items-center justify-center w-full space-x-6">
+          <div className="flex w-full space-x-6">
             <div>
               <input
                 type="number"
@@ -240,7 +261,7 @@ export default function CreateListing() {
         {offer === true && (
           <div className="mb-6">
             <p className="text-lg font-semibold">Discounted Price</p>
-            <div className="flex items-center justify-center w-full space-x-6">
+            <div div className={`flex  w-full space-x-6`}>
               <div>
                 <input
                   type="number"
